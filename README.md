@@ -36,6 +36,7 @@ Next add this lines to your package's `composer.json` file:
 ...
 "extra": {
     ...
+    "mushroom-use-hooks": true,
     "mushroom-hooks": {
         "after-install": [
             "Your\\Package\\Namespace\\MushroomHooks::afterInstall"
