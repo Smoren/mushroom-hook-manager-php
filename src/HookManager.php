@@ -23,6 +23,8 @@ class HookManager implements PluginInterface, EventSubscriberInterface
     const PATH_PROJECT = __DIR__.'/../../../..';
     const PATH_AUTOLOAD = self::PATH_PROJECT.'/vendor/autoload.php';
 
+    const DEBUG = true;
+
     /**
      * @var Composer
      */
@@ -92,7 +94,7 @@ class HookManager implements PluginInterface, EventSubscriberInterface
         require self::PATH_AUTOLOAD;
         $this->printMessage("TOTAL {$hooksCount} hooks found! Now execute...");
         $this->runHooks();
-        $this->printMessage("done!");
+        $this->printMessage("DONE!");
     }
 
     /**
@@ -105,7 +107,7 @@ class HookManager implements PluginInterface, EventSubscriberInterface
         $this->io = $io;
         $this->rootPackage = $composer->getPackage();
         $this->hooksToRun = [];
-        $this->printMessage('activated');
+        $this->printMessage('activated', true);
     }
 
     /**
@@ -114,7 +116,7 @@ class HookManager implements PluginInterface, EventSubscriberInterface
      */
     public function deactivate(Composer $composer, IOInterface $io)
     {
-        $this->printMessage('deactivated');
+        $this->printMessage('deactivated', true);
     }
 
     /**
@@ -123,7 +125,7 @@ class HookManager implements PluginInterface, EventSubscriberInterface
      */
     public function uninstall(Composer $composer, IOInterface $io)
     {
-        $this->printMessage('uninstalled');
+        $this->printMessage('uninstalled', true);
     }
 
     /**
@@ -142,7 +144,7 @@ class HookManager implements PluginInterface, EventSubscriberInterface
 
         $hooks = $depPackageExtra[self::KEY_HOOKS_LIST][$eventName] ?? [];
         $scriptsCount = count($hooks);
-        $this->printMessage("{$scriptsCount} hooks found!");
+        $this->printMessage("{$scriptsCount} hooks found!", true);
 
         foreach($hooks as $hook) {
             $params = $rootPackageExtra[self::KEY_HOOKS_PARAMS_LIST][$depPackageName][$eventName] ?? null;
@@ -167,9 +169,12 @@ class HookManager implements PluginInterface, EventSubscriberInterface
 
     /**
      * @param string $message
+     * @param bool $isDebug
      */
-    protected function printMessage(string $message)
+    protected function printMessage(string $message, bool $isDebug = false)
     {
-        echo "\e[34m[ MushroomHookManager ]\e[39m {$message}\n";
+        if(self::DEBUG || !$isDebug) {
+            echo "\e[34m[ MushroomHookManager ]\e[39m {$message}\n";
+        }
     }
 }
