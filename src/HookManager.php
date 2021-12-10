@@ -23,7 +23,7 @@ class HookManager implements PluginInterface, EventSubscriberInterface
     const PATH_PROJECT = __DIR__.'/../../../..';
     const PATH_AUTOLOAD = self::PATH_PROJECT.'/vendor/autoload.php';
 
-    const DEBUG = true;
+    const DEBUG = false;
 
     /**
      * @var Composer
